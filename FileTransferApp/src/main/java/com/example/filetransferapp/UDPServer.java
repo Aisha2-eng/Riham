@@ -78,9 +78,11 @@ public class UDPServer extends Application implements Initializable {
         int receivedPackets=0;
         boolean nameTurn=false;
         ArrayList<Byte>packets = new ArrayList<>();
+        int expectedSequenceNumber = 0;
         while (true) {
             socket.receive(packet);
             String input = new String(packet.getData(), 0, packet.getLength());
+            System.out.println(input);
             if(nameTurn){
                 fileName = input;
                 nameTurn = false;
@@ -88,6 +90,7 @@ public class UDPServer extends Application implements Initializable {
             }
             if(input.equals("\n##START##\n")) {
                 System.out.println("start receiving...");
+                expectedSequenceNumber = 0;
                 nameTurn = true;
             }
             else if(input.equals("\n##END##\n")) {
@@ -99,10 +102,39 @@ public class UDPServer extends Application implements Initializable {
                 receivedPackets = 0;
             }
             else {
-                for(int i =0 ; i < packet.getData().length ; i ++ ){
-                    packets.add(packet.getData()[i]);
+                int receivedSequenceNumber = Integer.parseInt(input.split(" ")[1]);
+
+                if (receivedSequenceNumber == expectedSequenceNumber) {
+                    System.out.println("Received: " + input);
+                    for(int i =0 ; i < packet.getData().length ; i ++ ){
+                        packets.add(packet.getData()[i]);
+                    }
+                    receivedPackets++;
+                    // Send acknowledgment
+                    String ackMessage = "ACK " + expectedSequenceNumber;
+                    byte[] ackData = ackMessage.getBytes();
+                    DatagramPacket ackPacket = new DatagramPacket(ackData, ackData.length, packet.getAddress(), packet.getPort());
+                    socket.send(ackPacket);
+                    socket.receive(packet);
+                    input = new String(packet.getData(), 0, packet.getLength());
+                    System.out.println(input);
+                    for(int i =0 ; i < packet.getData().length ; i ++ ){
+                        packets.add(packet.getData()[i]);
+                    }
+                    receivedPackets++;
+                    expectedSequenceNumber = (expectedSequenceNumber + 1) % 2; // Toggle sequence number
+                    if(input.equals("\n##END##\n")) {
+                        System.out.println("receiving packets ended");
+                        byte[] finalData = getBytes(packets);
+                        packets.clear();
+                        saveToFile(finalData, fileName);
+                        System.out.println("received packets = " + receivedPackets);
+                        receivedPackets = 0;
+                    }
+                } else {
+                    System.out.println("Received out-of-sequence packet. Discarding.");
                 }
-                receivedPackets++;
+
             }
         }
     }

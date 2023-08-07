@@ -48,13 +48,37 @@ public class UDPClient extends Application implements Initializable {
         System.out.println("sending...");
         File file = new File(fileName);
         sendACK(file.getName());
-
+        int sequenceNumber = 0;
         FileInputStream fileInputStream = new FileInputStream(file);
         byte[] buffer = new byte[1024];
-        int bytesRead;
-        while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+        int bytesRead = fileInputStream.read(buffer);
+        while (true) {
+            //send sequence number
+            sendACK("ack "+Integer.toString(sequenceNumber));
+            Thread.sleep(1000);
+
+            if(bytesRead == -1)
+                break;
             DatagramPacket packet = new DatagramPacket(buffer, bytesRead, serverAddress, serverPort);
             socket.send(packet);
+
+
+            //receive ACK
+            byte[] receiveData = new byte[1024];
+            DatagramPacket ackPacket = new DatagramPacket(receiveData, receiveData.length);
+            socket.receive(ackPacket);
+
+            String ackMessage = new String(ackPacket.getData(), 0, ackPacket.getLength());
+            if (ackMessage.equals("ACK " + sequenceNumber)) {
+                System.out.println("Packet " + sequenceNumber + " sent and acknowledged.");
+                sequenceNumber = (sequenceNumber + 1) % 2; // Toggle sequence number
+                bytesRead = fileInputStream.read(buffer);
+            } else {
+                System.out.println("Packet " + sequenceNumber + " not acknowledged. Retransmitting.");
+
+            }
+            // Introduce a delay for simulation purposes
+            Thread.sleep(1000);
         }
         fileInputStream.close();
         System.out.println("sent successfully");
