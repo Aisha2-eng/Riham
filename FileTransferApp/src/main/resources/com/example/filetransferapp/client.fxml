@@ -15,10 +15,10 @@
             <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="28.0">
                <children>
                   <Label text="Client IP" textAlignment="CENTER" />
-                  <TextField disable="true" prefWidth="150.0" />
+                  <TextField fx:id="clientIP" disable="true" prefWidth="150.0" />
                   <Label textAlignment="CENTER" />
                   <Label text="Client port" textAlignment="CENTER" />
-                  <TextField disable="true" prefWidth="100.0" />
+                  <TextField fx:id="clientPort" disable="true" prefWidth="100.0" />
                </children>
                <VBox.margin>
                   <Insets />
@@ -27,19 +27,25 @@
             <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="25.0">
                <children>
                   <Label text="Server IP" textAlignment="CENTER" />
-                  <TextField prefWidth="150.0" />
+                  <TextField fx:id="serverIP" prefWidth="150.0" />
                   <Label prefHeight="19.0" prefWidth="6.0" textAlignment="CENTER" />
                   <Label text="Server port" textAlignment="CENTER" />
-                  <TextField prefWidth="100.0" />
+                  <TextField fx:id="serverPortTF" prefWidth="100.0" />
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
+            <HBox alignment="CENTER_RIGHT" prefWidth="200.0" spacing="15.0">
                <children>
+                  <Button mnemonicParsing="false" onAction="#chooseFileClick" text="choose file" />
                   <Button fx:id="sendButton" mnemonicParsing="false" onAction="#onSendButtonClick" text="Send file" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefWidth="200.0" spacing="15.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#updatePort" text="update port" />
+               </children>
             </HBox>
          </children>
          <padding>
