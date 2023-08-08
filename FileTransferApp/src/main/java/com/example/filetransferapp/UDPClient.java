@@ -55,7 +55,7 @@ public class UDPClient extends Application implements Initializable {
         while (true) {
             //send sequence number
             sendACK("ack "+Integer.toString(sequenceNumber));
-            Thread.sleep(1000);
+            Thread.sleep(1);
 
             if(bytesRead == -1)
                 break;
@@ -75,10 +75,9 @@ public class UDPClient extends Application implements Initializable {
                 bytesRead = fileInputStream.read(buffer);
             } else {
                 System.out.println("Packet " + sequenceNumber + " not acknowledged. Retransmitting.");
-
             }
             // Introduce a delay for simulation purposes
-            Thread.sleep(1000);
+            Thread.sleep(1);
         }
         fileInputStream.close();
         System.out.println("sent successfully");
@@ -95,6 +94,7 @@ public class UDPClient extends Application implements Initializable {
         sendACK("\n##START##\n");
         sendFile();
         sendACK("\n##END##\n");
+        Thread.sleep(1000);
     }
 
     @FXML

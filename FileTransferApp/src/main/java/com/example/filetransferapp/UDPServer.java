@@ -70,7 +70,6 @@ public class UDPServer extends Application implements Initializable {
 //    }
 
     public Runnable startReceiving() throws Exception {
-        //TODO change
         buffer  = new byte[1024];
         packet = new DatagramPacket(buffer, buffer.length);
         socket = new DatagramSocket(serverIntPort);
@@ -82,7 +81,7 @@ public class UDPServer extends Application implements Initializable {
         while (true) {
             socket.receive(packet);
             String input = new String(packet.getData(), 0, packet.getLength());
-            System.out.println(input);
+//            System.out.println(input);
             if(nameTurn){
                 fileName = input;
                 nameTurn = false;
@@ -106,10 +105,6 @@ public class UDPServer extends Application implements Initializable {
 
                 if (receivedSequenceNumber == expectedSequenceNumber) {
                     System.out.println("Received: " + input);
-                    for(int i =0 ; i < packet.getData().length ; i ++ ){
-                        packets.add(packet.getData()[i]);
-                    }
-                    receivedPackets++;
                     // Send acknowledgment
                     String ackMessage = "ACK " + expectedSequenceNumber;
                     byte[] ackData = ackMessage.getBytes();

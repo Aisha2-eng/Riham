@@ -12,7 +12,7 @@
    <children>
       <VBox layoutX="40.0" layoutY="40.0" prefHeight="163.0" prefWidth="520.0" spacing="20.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="28.0">
+            <HBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="28.0" visible="false">
                <children>
                   <Label text="Client IP" textAlignment="CENTER" />
                   <TextField fx:id="clientIP" disable="true" prefWidth="150.0" />
@@ -41,9 +41,6 @@
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER_RIGHT" prefWidth="200.0" spacing="15.0">
-
             </HBox>
          </children>
          <padding>
