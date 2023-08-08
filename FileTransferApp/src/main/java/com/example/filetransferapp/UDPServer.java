@@ -36,8 +36,7 @@ public class UDPServer extends Application implements Initializable {
     }
 
     private void saveToFile(byte[]data, String name) throws Exception{
-        File file = new File(name);
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        FileOutputStream fileOutputStream = new FileOutputStream(name);
         fileOutputStream.write(data);
         fileOutputStream.close();
     }
@@ -96,7 +95,8 @@ public class UDPServer extends Application implements Initializable {
                 System.out.println("receiving packets ended");
                 byte[] finalData = getBytes(packets);
                 packets.clear();
-                saveToFile(finalData, fileName);
+                String filePath = "received files\\"+fileName;
+                saveToFile(finalData, filePath);
                 System.out.println("received packets = " + receivedPackets);
                 receivedPackets = 0;
             }
@@ -122,7 +122,8 @@ public class UDPServer extends Application implements Initializable {
                         System.out.println("receiving packets ended");
                         byte[] finalData = getBytes(packets);
                         packets.clear();
-                        saveToFile(finalData, fileName);
+                        String filePath = "received files\\"+fileName;
+                        saveToFile(finalData, filePath);
                         System.out.println("received packets = " + receivedPackets);
                         receivedPackets = 0;
                     }
