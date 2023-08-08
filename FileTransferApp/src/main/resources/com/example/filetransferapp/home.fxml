@@ -2,18 +2,20 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
 
 
 <AnchorPane maxHeight="200.0" minHeight="300.0" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.filetransferapp.Controller">
    <children>
-      <VBox alignment="CENTER" layoutX="150.0" layoutY="50.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
-         <children>
-            <Label text="start as" />
-            <Button fx:id="clientButton" mnemonicParsing="false" onAction="#onClientClick" text="client" />
-            <Button fx:id="serverButton" mnemonicParsing="false" onAction="#onServerClick" text="server" />
-         </children>
-      </VBox>
+      <ImageView fitHeight="174.0" fitWidth="164.0" layoutX="240.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../assests/Asset%202@2x-8.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="176.0" layoutY="51.0" stylesheets="@../../../../../assests/myCSS.css" text="start as" />
+      <Button fx:id="clientButton" layoutX="187.0" layoutY="162.0" mnemonicParsing="false" onAction="#onClientClick" prefHeight="38.0" prefWidth="77.0" stylesheets="@../../../../../assests/myCSS.css" text="client" textOverrun="CENTER_ELLIPSIS" />
+      <Button fx:id="serverButton" layoutX="50.0" layoutY="207.0" mnemonicParsing="false" onAction="#onServerClick" text="server" />
    </children>
 </AnchorPane>

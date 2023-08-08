@@ -22,7 +22,7 @@ public class UDPClient implements Initializable {
     private InetAddress serverAddress;
     private int serverPort, clientIntPort=1212;
     @FXML
-    private TextField serverIP, serverPortTF, clientIP, clientPort;
+    private TextField serverIP, serverPortTF, clientIP;
 
     private String fileName;
 
@@ -151,17 +151,7 @@ public class UDPClient implements Initializable {
         clientIP.setText(hostname);
     }
 
-//    @Override
-//    public void start(Stage stage) throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(UDPClient.class.getResource("client.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-//        stage.setTitle("Client side");
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-
     public static void main(String[] args) {
-//        launch();
         System.exit(0);
     }
 

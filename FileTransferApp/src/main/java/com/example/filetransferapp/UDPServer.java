@@ -21,7 +21,7 @@ public class UDPServer implements Initializable {
     private byte[] buffer;
     private DatagramPacket packet;
     @FXML
-    private TextField clientIP, clientPort, serverIP, serverPort;
+    private TextField  serverIP, serverPort;
     //---------------------------------------------------------------------------------
     void setServerPort(int port){
         this.serverIntPort = port;
@@ -149,24 +149,7 @@ public class UDPServer implements Initializable {
         }
         serverIP.setText(hostname);
     }
-//    @Override
-//    public void start(Stage stage) throws Exception {
-//        FXMLLoader fxmlLoader = new FXMLLoader(UDPClient.class.getResource("server.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-//        stage.setTitle("server side");
-//        stage.setScene(scene);
-//        stage.show();
-//        new Thread(() -> {
-//            try {
-//                UDPServer server = new UDPServer();
-//                server.startReceiving();
-//            } catch (Exception e2) {
-//                e2.printStackTrace();
-//            }
-//        }).start();
-//    }
     public static void main(String[] args) throws Exception {
-//        launch();
         System.exit(0);
     }
 

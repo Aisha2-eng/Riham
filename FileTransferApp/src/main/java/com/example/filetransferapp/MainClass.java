@@ -12,7 +12,8 @@ public class MainClass extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource("home.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 400, 300);
-        stage.setTitle("Hello!");
+        scene.getStylesheets().add(("..\\..\\..\\..\\..\\assests\\myCSS.css"));
+        stage.setTitle("Home");
         stage.setScene(scene);
         stage.show();
     }
