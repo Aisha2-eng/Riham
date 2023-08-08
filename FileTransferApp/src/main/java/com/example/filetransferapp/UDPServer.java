@@ -15,8 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class UDPServer implements Initializable {
-    private DatagramSocket socket;
+public class UDPServer extends Application implements Initializable {
+    private DatagramSocket socket, ackSocket;
     private int serverIntPort = 1234 ;
     private byte[] buffer;
     private DatagramPacket packet;
@@ -36,7 +36,8 @@ public class UDPServer implements Initializable {
     }
 
     private void saveToFile(byte[]data, String name) throws Exception{
-        FileOutputStream fileOutputStream = new FileOutputStream(name);
+        File file = new File(name);
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
         fileOutputStream.write(data);
         fileOutputStream.close();
     }
@@ -72,6 +73,7 @@ public class UDPServer implements Initializable {
         buffer  = new byte[1024];
         packet = new DatagramPacket(buffer, buffer.length);
         socket = new DatagramSocket(serverIntPort);
+        ackSocket = new DatagramSocket();
         String fileName = "output.txt";
         int receivedPackets=0;
         boolean nameTurn=false;
@@ -80,7 +82,6 @@ public class UDPServer implements Initializable {
         while (true) {
             socket.receive(packet);
             String input = new String(packet.getData(), 0, packet.getLength());
-//            System.out.println(input);
             if(nameTurn){
                 fileName = input;
                 nameTurn = false;
@@ -109,7 +110,7 @@ public class UDPServer implements Initializable {
                     String ackMessage = "ACK " + expectedSequenceNumber;
                     byte[] ackData = ackMessage.getBytes();
                     DatagramPacket ackPacket = new DatagramPacket(ackData, ackData.length, packet.getAddress(), packet.getPort());
-                    socket.send(ackPacket);
+                    ackSocket.send(ackPacket);
                     socket.receive(packet);
                     input = new String(packet.getData(), 0, packet.getLength());
                     System.out.println(input);
@@ -122,7 +123,7 @@ public class UDPServer implements Initializable {
                         System.out.println("receiving packets ended");
                         byte[] finalData = getBytes(packets);
                         packets.clear();
-                        String filePath = "received files\\"+fileName;
+                        String filePath = "receivedFiles\\"+fileName;
                         saveToFile(finalData, filePath);
                         System.out.println("received packets = " + receivedPackets);
                         receivedPackets = 0;
@@ -149,9 +150,24 @@ public class UDPServer implements Initializable {
         }
         serverIP.setText(hostname);
     }
-    public static void main(String[] args) throws Exception {
-        System.exit(0);
+    @Override
+    public void start(Stage stage) throws Exception {
+        FXMLLoader fxmlLoader = new FXMLLoader(UDPClient.class.getResource("server.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        stage.setTitle("server side");
+        stage.setScene(scene);
+        stage.show();
+        new Thread(() -> {
+            try {
+                UDPServer server = new UDPServer();
+                server.startReceiving();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }).start();
     }
-
+    public static void main(String[] args) throws Exception {
+        launch();
+    }
 
 }

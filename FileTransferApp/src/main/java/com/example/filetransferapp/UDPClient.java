@@ -16,9 +16,9 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class UDPClient implements Initializable {
+public class UDPClient extends Application implements Initializable {
     final FileChooser fileChooser = new FileChooser();
-    private DatagramSocket socket;
+    private DatagramSocket socket, ackSocket;
     private InetAddress serverAddress;
     private int serverPort, clientIntPort=1212;
     @FXML
@@ -41,6 +41,7 @@ public class UDPClient implements Initializable {
         setServerPort(port);
         setServerAddress(address);
         socket = new DatagramSocket();
+        ackSocket = new DatagramSocket();
         System.out.println("Socket was created successfully :)\n");
     }
 
@@ -55,7 +56,7 @@ public class UDPClient implements Initializable {
         while (true) {
             //send sequence number
             sendACK("ack "+Integer.toString(sequenceNumber));
-            Thread.sleep(1);
+            Thread.sleep(100);
 
             if(bytesRead == -1)
                 break;
@@ -66,7 +67,7 @@ public class UDPClient implements Initializable {
             //receive ACK
             byte[] receiveData = new byte[1024];
             DatagramPacket ackPacket = new DatagramPacket(receiveData, receiveData.length);
-            socket.receive(ackPacket);
+            ackSocket.receive(ackPacket);
 
             String ackMessage = new String(ackPacket.getData(), 0, ackPacket.getLength());
             if (ackMessage.equals("ACK " + sequenceNumber)) {
@@ -77,7 +78,7 @@ public class UDPClient implements Initializable {
                 System.out.println("Packet " + sequenceNumber + " not acknowledged. Retransmitting.");
             }
             // Introduce a delay for simulation purposes
-            Thread.sleep(1);
+            Thread.sleep(100);
         }
         fileInputStream.close();
         System.out.println("sent successfully");
@@ -85,7 +86,7 @@ public class UDPClient implements Initializable {
 
     private void sendACK(String msg) throws IOException {
         DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(),serverAddress, serverPort);
-        socket.send(packet);
+        ackSocket.send(packet);
     }
 
     @FXML
@@ -151,8 +152,17 @@ public class UDPClient implements Initializable {
         clientIP.setText(hostname);
     }
 
+    @Override
+    public void start(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(UDPClient.class.getResource("client.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        stage.setTitle("Client side");
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public static void main(String[] args) {
-        System.exit(0);
+        launch();
     }
 
 }
