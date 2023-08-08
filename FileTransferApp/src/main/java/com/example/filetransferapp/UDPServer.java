@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class UDPServer extends Application implements Initializable {
+public class UDPServer implements Initializable {
     private DatagramSocket socket;
     private int serverIntPort = 1234 ;
     private byte[] buffer;
@@ -149,24 +149,26 @@ public class UDPServer extends Application implements Initializable {
         }
         serverIP.setText(hostname);
     }
-    @Override
-    public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(UDPClient.class.getResource("server.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        stage.setTitle("server side");
-        stage.setScene(scene);
-        stage.show();
-        new Thread(() -> {
-            try {
-                UDPServer server = new UDPServer();
-                server.startReceiving();
-            } catch (Exception e2) {
-                e2.printStackTrace();
-            }
-        }).start();
-    }
+//    @Override
+//    public void start(Stage stage) throws Exception {
+//        FXMLLoader fxmlLoader = new FXMLLoader(UDPClient.class.getResource("server.fxml"));
+//        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+//        stage.setTitle("server side");
+//        stage.setScene(scene);
+//        stage.show();
+//        new Thread(() -> {
+//            try {
+//                UDPServer server = new UDPServer();
+//                server.startReceiving();
+//            } catch (Exception e2) {
+//                e2.printStackTrace();
+//            }
+//        }).start();
+//    }
     public static void main(String[] args) throws Exception {
-        launch();
+//        launch();
+        System.exit(0);
     }
+
 
 }
