@@ -1,22 +1,15 @@
 package com.example.filetransferapp;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.*;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class UDPClient extends Application implements Initializable {
+public class UDPClient implements Initializable {
     final FileChooser fileChooser = new FileChooser();
     private DatagramSocket socket, ackSocket;
     private InetAddress serverAddress;
@@ -150,17 +143,10 @@ public class UDPClient extends Application implements Initializable {
         clientIP.setText(hostname);
     }
 
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(UDPClient.class.getResource("client.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        stage.setTitle("Client side");
-        stage.setScene(scene);
-        stage.show();
-    }
 
     public static void main(String[] args) {
-        launch();
+//        launch();
+        System.exit(0);
     }
 
 }
