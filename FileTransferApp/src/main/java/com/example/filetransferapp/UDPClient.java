@@ -54,21 +54,19 @@ public class UDPClient extends Application implements Initializable {
         byte[] buffer = new byte[1024];
         int bytesRead = fileInputStream.read(buffer);
         while (true) {
-            //send sequence number
-            sendACK("ack "+Integer.toString(sequenceNumber));
-            Thread.sleep(100);
-
             if(bytesRead == -1)
                 break;
-            DatagramPacket packet = new DatagramPacket(buffer, bytesRead, serverAddress, serverPort);
-            socket.send(packet);
-
+            //send sequence number
+            sendACK("ack "+Integer.toString(sequenceNumber));
 
             //receive ACK
             byte[] receiveData = new byte[1024];
             DatagramPacket ackPacket = new DatagramPacket(receiveData, receiveData.length);
             ackSocket.receive(ackPacket);
+//            Thread.sleep(100);
 
+            DatagramPacket packet = new DatagramPacket(buffer, bytesRead, serverAddress, serverPort);
+            socket.send(packet);
             String ackMessage = new String(ackPacket.getData(), 0, ackPacket.getLength());
             if (ackMessage.equals("ACK " + sequenceNumber)) {
                 System.out.println("Packet " + sequenceNumber + " sent and acknowledged.");

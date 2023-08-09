@@ -38,6 +38,8 @@ public class UDPServer extends Application implements Initializable {
     private void saveToFile(byte[]data, String name) throws Exception{
         File file = new File(name);
         FileOutputStream fileOutputStream = new FileOutputStream(file);
+        fileOutputStream.write(new byte[0]);
+        System.out.println(new String(data));
         fileOutputStream.write(data);
         fileOutputStream.close();
     }
@@ -96,7 +98,7 @@ public class UDPServer extends Application implements Initializable {
                 System.out.println("receiving packets ended");
                 byte[] finalData = getBytes(packets);
                 packets.clear();
-                String filePath = "received files\\"+fileName;
+                String filePath = "receivedFiles\\"+fileName;
                 saveToFile(finalData, filePath);
                 System.out.println("received packets = " + receivedPackets);
                 receivedPackets = 0;
@@ -113,25 +115,17 @@ public class UDPServer extends Application implements Initializable {
                     ackSocket.send(ackPacket);
 
                     //receive packet
+                    buffer  = new byte[1024];
+                    packet = new DatagramPacket(buffer, buffer.length);
                     socket.receive(packet);
                     input = new String(packet.getData(), 0, packet.getLength());
                     System.out.println(input);
-                    if(input.equals("\n##END##\n")) {
-                        System.out.println("receiving packets ended");
-                        byte[] finalData = getBytes(packets);
-                        packets.clear();
-                        String filePath = "receivedFiles\\"+fileName;
-                        saveToFile(finalData, filePath);
-                        System.out.println("received packets = " + receivedPackets);
-                        receivedPackets = 0;
+                    for(int i =0 ; i < packet.getData().length ; i ++ ){
+                        packets.add(packet.getData()[i]);
                     }
-                    else {
-                        for(int i =0 ; i < packet.getData().length ; i ++ ){
-                            packets.add(packet.getData()[i]);
-                        }
-                        receivedPackets++;
-                        expectedSequenceNumber = (expectedSequenceNumber + 1) % 2; // Toggle sequence number
-                    }
+                    receivedPackets++;
+                    expectedSequenceNumber = (expectedSequenceNumber + 1) % 2; // Toggle sequence number
+
                 } else {
                     System.out.println("Received out-of-sequence packet. Discarding.");
                 }
