@@ -2,18 +2,34 @@ package com.example.filetransferapp;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
+import javafx.scene.image.Image;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class Controller {
+
+public class Controller implements Initializable {
 
     @FXML
     private Button clientButton, serverButton;
+
+    @FXML
+    ImageView clientImage, serverImage;
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        Image image = new Image(new File("assets\\client.png").toURI().toString());
+        clientImage.setImage(image);
+        image = new Image(new File("assets\\server.png").toURI().toString());
+        serverImage.setImage(image);
+    }
     @FXML
     protected void onClientClick() throws IOException {
         Stage stage = (Stage)clientButton.getScene().getWindow();
