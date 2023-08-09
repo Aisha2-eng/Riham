@@ -71,7 +71,6 @@ public class UDPClient implements Initializable {
             byte[] receiveData = new byte[1024];
             DatagramPacket ackPacket = new DatagramPacket(receiveData, receiveData.length);
             ackSocket.receive(ackPacket);
-//            Thread.sleep(100);
 
             DatagramPacket packet = new DatagramPacket(buffer, bytesRead, serverAddress, serverPort);
             socket.send(packet);
@@ -96,6 +95,7 @@ public class UDPClient implements Initializable {
         DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(),serverAddress, serverPort);
         ackSocket.send(packet);
     }
+
     private void endSending() throws Exception {
         sendACK("\n##END##\n");
         String msg = "Number of successful packets: "+sentPackets+", number of failed packet: "+failedPackets;
@@ -105,6 +105,7 @@ public class UDPClient implements Initializable {
         failedPackets=0;
         Thread.sleep(1000);
     }
+
     @FXML
     public void onSendButtonClick(javafx.event.ActionEvent event) throws Exception {
         packetsStatus.setVisible(false);
@@ -140,7 +141,6 @@ public class UDPClient implements Initializable {
         }
         clientIP.setText(hostname);
     }
-
 
     public static void main(String[] args) {
         System.exit(0);
